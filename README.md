@@ -1,2 +1,0 @@
-# InvestorStein
-Closing Beast Mode
