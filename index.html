@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>InvestorStein – MensRx™ & WomensRx™ Cockpit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --mint: #92E6A7;
+      --mint-dark: #64c77e;
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #555555;
+      --card-border: #e4f6e8;
+      --warn: #ffb3b3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 24px;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    nav button {
+      border-radius: 999px;
+      border: 1px solid var(--mint);
+      background: #f8fff9;
+      padding: 6px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      color: var(--text);
+      transition: background 0.15s ease, transform 0.05s ease;
+      white-space: nowrap;
+    }
+
+    nav button:hover {
+      background: var(--mint);
+      transform: translateY(-1px);
+    }
+
+    nav button:active { transform: translateY(0); }
+
+    main {
+      max-width: 1080px;
+      margin: 16px auto 40px;
+      padding: 0 16px 24px;
+    }
+
+    .pill-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f3fff6;
+      border: 1px solid var(--card-border);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .pill-note span.icon {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--mint-dark);
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 8px 0 4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin: 18px 0 6px;
+    }
+
+    p {
+      margin: 4px 0 10px;
+      font-size: 14px;
+    }
+
+    ul {
+      margin: 4px 0 10px 20px;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .card {
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      background: #fcfffd;
+      padding: 16px 18px;
+      margin: 16px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: #053216;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .script-block {
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #e6f5eb;
+      padding: 12px 14px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .qa-item { margin-bottom: 16px; }
+
+    .qa-q {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .qa-a {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .highlight {
+      background: #ebffef;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 13px;
+      border-left: 3px solid var(--mint-dark);
+      margin: 6px 0 10px;
+    }
+
+    .warning {
+      background: #fff5f5;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 13px;
+      border-left: 3px solid #ff6b6b;
+      margin: 6px 0 10px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .section-title span.dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--mint-dark);
+    }
+
+    .inline-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #d4f1dc;
+      background: #f7fff9;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 600px) {
+      header { position: static; }
+      .header-inner { align-items: flex-start; }
+      nav { gap: 4px; }
+      nav button { font-size: 10px; padding: 4px 8px; }
+    }
+  </style>
+  <script>
+    function goToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  </script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-title">InvestorStein – MensRx™ & WomensRx™</div>
+      <div class="brand-sub">Glen’s live accredited-investor cockpit • No fluff, no hype, just ammo</div>
+    </div>
+    <nav>
+      <button type="button" onclick="goToSection('overview')">Overview</button>
+      <button type="button" onclick="goToSection('core')">Core Pitch</button>
+      <button type="button" onclick="goToSection('founder')">Founder & Credibility</button>
+      <button type="button" onclick="goToSection('market')">Market & Hims/Hers</button>
+      <button type="button" onclick="goToSection('product')">Product & Clinical</button>
+      <button type="button" onclick="goToSection('economics')">Economics & Use of Funds</button>
+      <button type="button" onclick="goToSection('gtm')">Go-To-Market</button>
+      <button type="button" onclick="goToSection('dialogue')">Live Dialogue (Q&A)</button>
+      <button type="button" onclick="goToSection('hard')">Hard / Brutal Questions</button>
+      <button type="button" onclick="goToSection('traps')">Traps to Avoid</button>
+      <button type="button" onclick="goToSection('close')">$250K Close Script</button>
+      <button type="button" onclick="goToSection('reset')">Panic Reset Lines</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="pill-note">
+      <span class="icon"></span>
+      <span>Use this live. Short answers. Calm tone. Let the investor talk more than you.</span>
+    </div>
+
+    <h1>MensRx™ & WomensRx™ – Accredited Investor Cockpit</h1>
+    <p style="max-width: 820px;">
+      This page is Glen’s on-screen cockpit for a 20–60 minute call with a serious, skeptical accredited investor.
+      Think Mark Cuban’s bluntness plus Andrew Dudum’s operator brain. The goal is not to “sound impressive” –
+      it’s to survive hard questions, stay credible, and make the $250K seed decision feel logical, not emotional.
+    </p>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="label">Brutal truth</div>
+          <h2 style="margin: 2px 0 0;">What this investor actually wants to know</h2>
+        </div>
+        <div class="card-tag">No BS</div>
+      </div>
+      <ul>
+        <li><strong>1. Is the problem big, real, and painful – or just another wellness buzzword?</strong></li>
+        <li><strong>2. Are you actually different from Hims/Hers – or just a smaller, riskier copy?</strong></li>
+        <li><strong>3. Do you personally have the background to pull this off without blowing up?</strong></li>
+        <li><strong>4. What happens with my $250K – line by line – and how quickly do you de-risk it?</strong></li>
+        <li><strong>5. What's the realistic upside and what are the real risks?</strong></li>
+      </ul>
+      <p class="highlight">
+        Glen: If you can answer <strong>those five things calmly</strong>, this call goes well. This cockpit gives you the language.
+      </p>
+    </div>
+  </section>
+
+  <!-- CORE PITCH -->
+  <section id="core">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Core Pitch – 90 Second Opening</h2>
+    </div>
+    <p class="highlight">
+      Read this slowly at the start. Then stop. Let them react and ask questions.
+    </p>
+    <div class="card">
+      <div class="script-block">
+Thanks for taking the time today. I’ll keep this clear and direct.
+
+Men’s and women’s vitality medicine is broken at a deeper level than most people realize. Men in their thirties and forties feel their energy, drive, and confidence drop. Women in peri-menopause and menopause go through hormonal swings, poor sleep, low desire, and emotional disconnect that affects their relationships, their work, and their overall quality of life.
+
+This isn’t vanity care. It’s identity care. People don’t just want a pill – they want to feel like themselves again.
+
+Hims and Hers and others have already proven that the demand is there. But they operate mostly at the surface level: quick visits, simple prescriptions, subscription refills. They’re optimized for speed and simplicity.
+
+What doesn’t really exist yet is a clinical vitality ecosystem for both men and women – with hormone optimization, peptides, compounding when appropriate, and longer-term protocols guided by real providers, with a compliance-first backbone.
+
+That’s the gap MensRx and WomensRx are built to fill.
+
+My lane is vision plus compliance. I’ve spent more than thirty years in healthcare building multi-state provider networks, telehealth systems, and pharmacy and compounding partnerships. Back in 2017, long before the current telehealth wave, I secured the MensRx and WomensRx trademarks because I saw where this category was heading.
+
+Our goal is to build the trusted clinical vitality brands for both men and women in the U.S., de-risk the model in the first 12 to 18 months, and position this as a platform that can either scale independently or be acquired once the economics are proven.
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER -->
+  <section id="founder">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Founder & Credibility – Glen’s Story in Tight Form</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="label">Anchor</div>
+          <h3>3-Sentence Founder Bio (Memorize This)</h3>
+        </div>
+        <div class="card-tag">Identity</div>
+      </div>
+      <div class="script-block">
+“I’ve spent more than thirty years in healthcare building and managing multi-state provider networks, telehealth systems, and pharmacy and compounding partnerships.
+
+My lane is combining vision with compliance – building things that are innovative, but also medically safe, legal, and scalable.
+
+Back in 2017, I secured the MensRx and WomensRx trademarks because I saw early where male and female vitality medicine was heading, long before this current telehealth wave.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">If they ask “Why should I bet on you?”</div>
+      <div class="script-block">
+“I’m not trying to be the celebrity founder or the loudest marketer in the room.
+
+Where I’m strong is in building the actual medical and compliance spine that lets something like this scale without blowing up. That’s provider networks, telehealth infrastructure, pharmacy and compounding relationships, and understanding where regulators get nervous.
+
+What I’m looking for in a partner is someone who respects that foundation and wants to help turn it into a disciplined, scalable growth engine.”
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET -->
+  <section id="market">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Market & Competition – Including Hims/Hers</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">How big is this really?</div>
+      <p class="highlight">
+        Glen doesn’t need a 20-slide TAM analysis. He needs a simple, believable narrative.
+      </p>
+      <div class="script-block">
+“The short answer is: this market is already huge and still underdeveloped.
+
+You’ve got tens of millions of men and women in the U.S. alone dealing with hormone-related vitality issues – energy, mood, libido, sleep, and identity-level changes.
+
+Hims and Hers have already taken this from ‘taboo’ to mainstream and built a multi-billion dollar company largely on the surface layer – quick visits, standardized treatment, and subscription refill logic.
+
+We sit deeper than that. We’re focused on the clinical vitality layer: more personalized hormone programs, peptides, compounding when appropriate, and long-term household relationships for both men and women.
+
+So we’re not trying to prove that people care about this. That’s already proven. We’re trying to build the clinical version that can coexist with, and eventually be highly attractive to, the larger telehealth players and PE roll-ups.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Hims/Hers – Exactly How to Talk About Them</div>
+      <div class="script-block">
+“Hims and Hers are excellent marketers and operators. They’ve done a great job proving demand and normalizing this category.
+
+Where we’re different is the depth of the model. Their machine is engineered for speed and simplicity: quick visits, standardized care paths, minimal friction.
+
+We’re deliberately building for a different part of the curve – deeper clinical protocols for both men and women, with hormone optimization, peptides, compounding, and longer-term household care.
+
+Clinics, lab monitoring, and advanced protocols require a different operational backbone – provider oversight, liability frameworks, and state-by-state compliance. Their system isn’t built for that kind of complexity. Ours is designed around it from day one.
+
+So we don’t frame ourselves as ‘Hims but smaller.’ We frame ourselves as ‘the clinical vitality layer’ that sits deeper in the same universe.”
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT & CLINICAL -->
+  <section id="product">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Product & Clinical – What We Actually Do</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">Simple Explanation (For Investor & Consumers)</div>
+      <div class="script-block">
+“At the consumer level, it’s simple:
+
+MensRx helps men re-build energy, drive, and performance. WomensRx helps women navigate peri-menopause and menopause with better hormone balance, desire, sleep, and emotional stability.
+
+Under the hood, that looks like:
+
+• Telehealth consults with licensed providers
+• Lab-informed protocols where appropriate
+• Hormone optimization programs
+• Peptides and related therapies where clinically appropriate
+• Compounded formulations when standard approaches aren’t enough
+• Long-term monitoring and follow-up instead of one-and-done scripts
+
+The patient’s experience is: ‘I feel like myself again’ – but the engine making that possible is a clinical, compliance-driven infrastructure.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">If They Ask About Safety & Compliance</div>
+      <div class="script-block">
+“Medically, we’re not trying to reinvent molecules. We’re working with FDA-approved drugs, evidence-based protocols, and compounding that stays inside what’s clinically and legally appropriate.
+
+The risk is not on the science side – it’s on execution and compliance, which is why my background and our structure matter.
+
+We’re building this as a medical business with a growth engine, not a growth business that happens to be in medicine.”
+      </div>
+    </div>
+  </section>
+
+  <!-- ECONOMICS & USE OF FUNDS -->
+  <section id="economics">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Economics & Use of Funds – Where the $250K Goes</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">High-Level Economics (Talk Like an Adult)</div>
+      <div class="script-block">
+“At a high level, this is a subscription-driven clinical business.
+
+We expect:
+
+• Strong average order value and monthly subscription price
+• Above-average gross margins due to the nature of the services and products
+• High potential for lifetime value if we execute on retention – especially when both partners in a household are on-platform
+
+We’re not pretending we know the exact CAC and LTV on day one. The honest answer is that the first 12 to 18 months are about getting real cohort data on acquisition cost, retention, and contribution margin, then deciding how aggressively to scale.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Use of $250K – Simple Breakdown Glen Can Read</div>
+      <div class="script-block">
+“Here’s how your $250,000 actually gets used:
+
+Roughly:
+
+• 30–35% – Clinical and compliance infrastructure
+  Providers, telehealth workflows, EHR and process, legal/compliance setup, and the basic operations we need to be safe and functional.
+
+• 25–30% – Product, brand, and funnel build
+  MensRx and WomensRx digital properties, onboarding flows, scripts, email/SMS, and a clean, conversion-oriented brand presence.
+
+• 30–35% – Controlled marketing and patient acquisition
+  Initial paid campaigns, influencer tests, and content that drives real appointments and subscriptions on both the men’s and women’s sides.
+
+The goal is not to run a vanity burn. The goal is to come out of that first phase with actual data: what does it cost to acquire a patient, how long do they stay, and what does the contribution margin look like.
+
+From there, we either turn the dial up, adjust the model, or – if the economics aren’t there – we don’t pretend otherwise.”
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">If Investor Pushes on “What if CAC is Double?”</div>
+      <div class="script-block">
+“If acquisition costs come in higher than we expect, we have to either:
+
+• Improve funnel performance and retention to support that higher CAC,
+• Adjust pricing and packaging,
+• Or stay disciplined and not force scale into bad unit economics.
+
+I’d rather be honest that this is what we’re testing with your capital than promise fantasy CAC numbers and then disappoint you.”
+      </div>
+    </div>
+  </section>
+
+  <!-- GO TO MARKET -->
+  <section id="gtm">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Go-To-Market – How We Actually Get Patients</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">Plain-Language GTM</div>
+      <div class="script-block">
+“We’re not betting this on one magic channel.
+
+Our initial go-to-market looks like:
+
+• High-intent search – people actively looking for hormone, TRT, menopause, libido, and vitality solutions.
+• Influencer and expert partnerships – trusted voices in fitness, longevity, women’s health, and men’s performance.
+• Education-driven content – simple, clear explanations of what’s actually happening to people’s bodies and what they can do about it.
+• Referral loops – especially when both partners in a household are on-platform and getting results.
+
+The first 6–12 months are about finding the combinations of channel + message + offer that produce healthy acquisition and retention economics, not trying to blanket the internet overnight.”
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE DIALOGUE -->
+  <section id="dialogue">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Live Dialogue – Scripted Q&A (Normal Level)</h2>
+    </div>
+    <p class="highlight">
+      This is the “normal” level investor. Not hostile yet. Just sharp and curious.
+    </p>
+
+    <div class="card">
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “Okay, so walk me through the actual ask.”</div>
+        <div class="qa-a">
+Glen: “We’re looking for a $250,000 seed check as the lead investor.
+
+That capital is earmarked for building out the clinical backbone, the brand and funnels for MensRx and WomensRx, and acquiring and retaining our first cohorts of patients on both sides so we can prove out real economics and decide how aggressively to scale.
+
+In return, you’d be getting a meaningful minority stake at an early valuation, plus the ability to follow on if you want to own more once the data is in.”
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “What do you have today versus what’s still just on paper?”</div>
+        <div class="qa-a">
+Glen: “Today, we have:
+
+• The brand and IP – MensRx and WomensRx secured early.
+• The clinical concept and protocol frameworks.
+• My three decades of provider, telehealth, and pharmacy experience.
+
+What’s ahead of us – and what your capital funds – is turning that into an operating machine with real patients, real cohort data, and real unit economics. I’m not going to pretend we’re further along than we are. Your money takes this from a structurally sound plan to a live, measurable business.”
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “What does a realistic win look like if I write this check?”</div>
+        <div class="qa-a">
+Glen: “A realistic win is that you end up owning a significant piece of the clinical vitality leader for both men and women.
+
+If we execute, this is a platform that can grow into an eight- or nine-figure revenue business and become a natural acquisition target for larger telehealth players or PE roll-ups who want the deeper clinical layer.
+
+Your $250,000 puts you into that position before the numbers are obvious to everyone else.”
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HARD / BRUTAL QUESTIONS -->
+  <section id="hard">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Hard / Brutal Questions – Cuban Mode</h2>
+    </div>
+    <p class="highlight">
+      These are the ones that can rattle Glen. The key is to stay calm, admit risk, and show discipline.
+    </p>
+
+    <div class="card">
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “Why hasn’t someone deeper and better funded already done this and won?”</div>
+        <div class="qa-a">
+Glen: “Because doing deep clinical work at scale is hard.
+
+Most strong clinical teams move slowly and don’t build great growth machines. Most great growth teams cut corners on the medical side to move fast.
+
+Our advantage is that this is what I’ve done for decades – building provider networks, telehealth systems, and pharmacy relationships that can operate across states without tripping over compliance. That doesn’t guarantee success, but it does mean we’re not naive about the operational complexity here.”
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “What if this ends up being a super expensive experiment?”</div>
+        <div class="qa-a">
+Glen: “Then we’ll call it what it is.
+
+If we run the 12–18 month plan, follow the data, and the unit economics aren’t there – acquisition costs are too high, retention is too low – then your $250,000 bought clarity in a big category instead of returns.
+
+I’d rather be upfront about that possibility than sell you a fantasy. The flip side is, if the numbers are good, you’re in early at a level that makes the upside meaningful.”
+        </div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">INVESTOR: “How likely is it that this is a 10x, 20x outcome versus a 0?”</div>
+        <div class="qa-a">
+Glen: “The space itself clearly has 10x and 20x potential – Hims and Hers proved that.
+
+The question is whether our specific execution earns a meaningful slice of that.
+
+We’re not promising a guaranteed 20x. We’re saying: this is a big, validated category where a clinical-depth, dual-gender, compliance-first player can be very valuable if we hit our milestones. If that risk-reward profile fits how you like to invest, then this is worth serious consideration.”
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAPS -->
+  <section id="traps">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Traps to Avoid – Things Glen Must Not Say</h2>
+    </div>
+
+    <div class="card">
+      <div class="warning">
+        Glen: If you feel defensive, slow down. Do <strong>not</strong> say any of the following.
+      </div>
+      <ul>
+        <li><strong>“We’re the first…”</strong><br>  
+          You’re not. Hims/Hers exist. Always position on depth, not first-ness.</li>
+        <li><strong>“There’s basically no risk…”</strong><br>  
+          That’s how you lose credibility instantly. Always acknowledge execution risk.</li>
+        <li><strong>Over-promising CAC or LTV numbers you don’t have.</strong><br>  
+          Use language like “we’re going to learn the real numbers and scale based on what’s actually working.”</li>
+        <li><strong>Trashing Hims/Hers.</strong><br>  
+          Respect them as proof of demand; differentiate calmly.</li>
+        <li><strong>Getting lost in medical jargon.</strong><br>  
+          Keep explanations at the “smart layperson” level. Investors care more about risk, economics, and your judgment.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CLOSE SCRIPT -->
+  <section id="close">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>$250K Close Script – How to Ask Like an Adult</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">Use this when questions slow down and it’s time to test commitment.</div>
+      <div class="script-block">
+“Let me pull this together for a second and bring it to a simple decision point.
+
+We’re in a category that’s already been validated by players like Hims and Hers. The difference is that we’re building the clinical vitality layer – deeper protocols, dual-gender household care, and a compliance-first backbone that most growth-focused companies don’t want to deal with.
+
+You understand my background in provider networks, telehealth, and pharmacy. You understand that the risk here is execution and unit economics, not whether people care about the problem.
+
+The ask from you is $250,000 as the lead seed check.
+
+That capital builds the spine – the clinical infrastructure, the brand and funnels, and the first real cohorts of patients on both the men’s and women’s sides so we can prove the model with actual data.
+
+In return, you’re getting a meaningful equity position at an early-stage valuation, with the option to double down if we hit the milestones we’re laying out.
+
+So the question is: does this fit the kind of risk-adjusted bet you like to make at this stage?
+
+If it does, the next step is that I send over the term outline, we align on valuation and structure, and we move into docs and wiring details.
+
+How are you feeling about moving forward at the $250,000 level as the lead investor?”
+      </div>
+    </div>
+  </section>
+
+  <!-- RESET -->
+  <section id="reset">
+    <div class="section-title">
+      <span class="dot"></span>
+      <h2>Panic Reset Lines – For When Glen’s Brain Blanks</h2>
+    </div>
+
+    <div class="card">
+      <div class="label">If you feel stuck, use one of these to breathe and reset.</div>
+      <div class="script-block">
+“Let me zoom out for a second and answer that clearly.”
+
+“At a high level, the story is simple…” 
+
+“The honest answer is: we don’t know that number yet. That’s exactly what the first 12–18 months with your capital are about proving.”
+
+“The biggest risk here is execution, not demand – and I’d rather be upfront about that than oversell you.”
+
+“If we see the economics aren’t working, we’re not going to force scale. We’ll adjust or we won’t push further capital into a bad model.”
+
+“These are the kinds of disciplined decisions I’ve had to make in healthcare for decades – and that’s the same mindset I’m bringing here.”
+      </div>
+      <p class="highlight">
+        Glen: Any time you get rattled, pick <strong>one</strong> line above, say it slowly, then answer the question in simple, plain English.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
